@@ -27,11 +27,12 @@ class OrderService {
     public function store ($data) {
         try {
             DB::beginTransaction();
+            $code = "P000" . $this->indexCode();
             $model = Order::create([
                 'type_payment' => $data['type_payment'],
                 'client_id' => $data['client_id'],
                 'total' => $data['total'],
-                'code' => $data['code'],
+                'code' => $data['code'] ?? $code,
                 'status' => 'verificar'
             ]);
             $model->syncProducts($data['products']);

@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     {
         $user = User::create([
             'email' => 'admin1@gmail.com',
-            'password' => bcrypt('12345678'),
+            'password' => bcrypt('Jhjacoz_96'),
         ]);
         $client = Client::create(["name"=> 'Albani Juarez', "phone"=> '04948393', "email"=> "admin1@gmail.com",
             "user_id"=>  $user->id,

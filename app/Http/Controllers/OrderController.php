@@ -54,7 +54,7 @@ class OrderController extends Controller
             $message =  __('response.order.create_success');
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data, $message);
         } catch (\Exception $e) { 
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+            return $e;
         }
     }
 
