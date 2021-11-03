@@ -32,7 +32,7 @@ class OrderService {
                 'type_payment' => $data['type_payment'],
                 'client_id' => $data['client_id'],
                 'total' => $data['total'],
-                'code' => $data['code'] ?? $code,
+                'code' => $code,
                 'status' => 'verificar'
             ]);
             $model->syncProducts($data['products']);
