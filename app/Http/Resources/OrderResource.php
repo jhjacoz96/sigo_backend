@@ -19,7 +19,7 @@ class OrderResource extends JsonResource
             'type_payment' => $this->type_payment,
             'code' => $this->code,
             'client_id' => $this->client_id,
-            'client' => new clientResource($this->client),
+            'client' => new ClientResource($this->client),
             'total' => $this->total,
             'status' => $this->status,
             'created_at' => $this->created_at,
