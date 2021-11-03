@@ -101,7 +101,7 @@ class OrderService {
 
     public function indexCode () {
         try {
-            $data = Order::all()->last()->id;
+            $data = Order::all()->last();
             return  $data;
         } catch (\Exception $e) {
             return $e;
