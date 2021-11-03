@@ -47,6 +47,10 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Client', 'user_id', 'id');
     }
 
+    public function employee () {
+        return $this->hasOne('App\Models\Employee', 'user_id', 'id');
+    }
+
     public static function getModelAuth () {
         $model = \Auth::user()->client;
         return $model;
