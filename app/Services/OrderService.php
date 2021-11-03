@@ -27,7 +27,7 @@ class OrderService {
     public function store ($data) {
         try {
             DB::beginTransaction();
-            $code = "P000" . $this->indexCode();
+            $code = $this->indexCode();
             return $code;
             $model = Order::create([
                 'type_payment' => $data['type_payment'],
