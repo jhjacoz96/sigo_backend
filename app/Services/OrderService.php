@@ -36,9 +36,8 @@ class OrderService {
                 'status' => 'verificar'
             ]);
             $model->syncProducts($data['products']);
-            
-            $model->refresh();
             DB::commit();
+            $model->refresh();
             return  $model;
         } catch (\Exception $e) {
             DB::rollback();
