@@ -48,7 +48,6 @@ class OrderController extends Controller
        try {
             $data = $request->validated();
             $model = $this->service->store($data);
-            return $model;
             $client = $this->serviceClient->find();
             $this->serviceCart->destroyAll($client);
             $data = new OrderResource($model);

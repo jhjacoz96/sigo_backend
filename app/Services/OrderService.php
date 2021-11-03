@@ -27,8 +27,7 @@ class OrderService {
     public function store ($data) {
         try {
             DB::beginTransaction();
-            $code = "P000" . ($this->indexCode() + 1);
-            return $code;
+            $code = "P000" . $this->indexCode();
             $model = Order::create([
                 'type_payment' => $data['type_payment'],
                 'client_id' => $data['client_id'],
@@ -103,9 +102,9 @@ class OrderService {
         try {
             $data = Order::all();
             if ($data->count() > 0)
-                return $data->last()->id;
+                return $data->last()->id + 1;
             else
-                return 0;
+                return 1;
         } catch (\Exception $e) {
             return $e;
         }
