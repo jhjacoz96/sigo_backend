@@ -36,4 +36,8 @@ class Client extends Model
     public function favorite () {
         return $this->hasMany('App\Models\Favorite', 'client_id', 'id');
     }
+
+     public function type_document () {
+        return $this->belongsTo('App\Models\TypeDocument', 'type_document_id', 'id');
+    }
 }
