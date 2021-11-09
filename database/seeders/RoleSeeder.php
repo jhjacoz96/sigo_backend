@@ -17,7 +17,7 @@ class RoleSeeder extends Seeder
     {
         $this->createPermissions();
         $this->createRole();
-        $this->asiignPermissions();
+        $this->assignPermissions();
     }
 
     private function createPermissions () {
@@ -75,8 +75,7 @@ class RoleSeeder extends Seeder
         }
     }
 
-    private function asiignPermissions (){
-        $role = Role::findByName('Administrador');
-        $role->syncPermissions(Permission::all());
+    private function assignPermissions (){
+       Role::where('name' ,'Administrador')->first()->syncPermissions(Permission::all());
     }
 }
