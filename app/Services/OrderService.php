@@ -82,7 +82,7 @@ class OrderService {
     public function indexClient () {
         try {
             $client = \Auth::user()->client;
-            $model = $client->orders;
+            $model = $client->orders->sortByDesc('id');
             return  $model;
         } catch (\Exception $e) {
             return $e;

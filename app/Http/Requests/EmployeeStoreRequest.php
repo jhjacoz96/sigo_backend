@@ -29,6 +29,7 @@ class EmployeeStoreRequest extends FormRequest
             'phone' => 'required|string',
             'email' => 'required|string|email|unique:employees|unique:users',
             'document' => 'required|string',
+            'role_id' => 'required|string|exists:roles,name',
             'comment' => 'sometimes|nullable|string',
             'type_document_id' => 'required|integer|exists:type_documents,id',
             'password' => 'required|string|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&-_]/|confirmed',

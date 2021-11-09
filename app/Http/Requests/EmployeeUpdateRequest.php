@@ -25,20 +25,22 @@ class EmployeeUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $employee = Employee::find(request()->route('employee'));
+        $employee = request()->route('employee');
+        dump($employee);
         return [
             'name' => 'required|string',
             'phone' => 'required|string',
-            'email' => ['required', 'string', 'email', 'unique:employees,email,'.request()->route('employee'),
+            'email' => ['required', 'string', 'email', 'unique:employees,email,'.$employee->id,
                 Rule::unique('users')->ignore($employee->user->id)
             ],
             'document' => 'required|string',
             'comment' => 'sometimes|nullable|string',
+            'role_id' => 'required|string|exists:roles,name',
             'status' => 'required|string',
             'user_id' => ['required','integer',
                 Rule::exists('users', 'id')
-                ->where(function($q) {
-                    $q->whereRaw('EXISTS(SELECT e.id FROM employees e WHERE e.user_id = users.id and e.id =' . $this->route('employee') . ' )');
+                ->where(function($q) use($employee) {
+                    $q->whereRaw('EXISTS(SELECT e.id FROM employees e WHERE e.user_id = users.id and e.id =' . $employee->id . ' )');
                 })
             ],
             'type_document_id' => 'required|integer|exists:type_documents,id'

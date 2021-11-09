@@ -47,6 +47,7 @@ class EmployeeService {
                 'type_document_id' => $data['type_document_id'],
                 'status' => 'A'
             ]);
+            $model->user->syncRoles([$data['role_id']]);
             DB::commit();
             return  $model;
         } catch (\Exception $e) {
@@ -55,13 +56,10 @@ class EmployeeService {
         }
     }
 
-    public function update ($data, $id) {
+    public function update ($data, $employee) {
         try {
             DB::beginTransaction();
-            $model = Employee::updateOrCreate(
-            [
-                'id' => $id
-            ],
+            $employee->update(
             [
                 'name' => $data['name'],
                 'phone' => $data['phone'],
@@ -70,23 +68,11 @@ class EmployeeService {
                 'comment' => $data['comment'] ?? null,
                 'user_id' =>  $data['user_id'],
                 'type_document_id' => $data['type_document_id'],
-                'status' => 'A'
+                'status' => $data['status']
             ]);
+            $employee->user->syncRoles([$data['role_id']]);
             DB::commit();
-            return  $model;
-        } catch (\Exception $e) {
-            DB::rollback();
-            return $e;
-        }
-    }
-
-    public function show ($id) {
-        try {
-            DB::beginTransaction();
-            $model = Employee::find($id);
-            if(!$model) return null;
-            DB::commit();
-            return $model;
+            return  $employee;
         } catch (\Exception $e) {
             DB::rollback();
             return $e;

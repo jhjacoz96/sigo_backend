@@ -14,6 +14,7 @@ class EmployeeResource extends JsonResource
      */
     public function toArray($request)
     {
+        $role = count($this->user->roles) > 0 ? $this->user->roles[0] : null;
         return [
             "id"=> $this->id,
             "name"=> $this->name,
@@ -24,6 +25,8 @@ class EmployeeResource extends JsonResource
             "user_id" => $this->user_id,
             "type_document_id"=> $this->type_document_id,
             "type_document"=> $this->type_document,
+            "role_id" =>  $role['id'] ?? null,
+            "role" => new RoleResource($role),
             "status"=> $this->status
         ];
     }

@@ -16,12 +16,13 @@ class AuthResource extends JsonResource
      */
     public function toArray($request)
     {
-        $modelAssociate = !empty($this->client) ? Client::class : Employee::class;
+        $path = !empty($this->client) ? Client::class : Employee::class;
+        $model = substr($path, 11);
         return [
             'id' => $this->id,
             'email' => $this->email,
-            'profile' =>  substr($modelAssociate, 11) === 'CLient' ? new ClientResource($this->client) : new EmployeeResource($this->employee),
-            'modelAssociate' => substr($modelAssociate, 11)
+            'profile' => $model  === 'CLient' ? new ClientResource($this->client) : new EmployeeResource($this->employee),
+            'modelAssociate' => $model,
         ];
     }
 }

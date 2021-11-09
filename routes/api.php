@@ -14,6 +14,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\RoleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,6 +52,13 @@ Route::group([
             Route::get('', [Controller::class, 'showOrganization']);
         });
         Route::ApiResource('employee', EmployeeController::class);
+        Route::prefix('role')->group(function() {
+             Route::get('', [RoleController::class, 'index']);
+             Route::post('', [RoleController::class, 'store']);
+             Route::put('{role}', [RoleController::class, 'update']);
+             Route::delete('{role}', [RoleController::class, 'delete']);
+             Route::get('permission', [RoleController::class, 'indexPermission']);
+        });
         Route::ApiResource('client', ClientController::class);
         Route::ApiResource('provider', ProviderController::class);
         Route::ApiResource('category', CategoryController::class);

@@ -44,22 +44,14 @@ class EmployeeController extends Controller
           }
     }
 
-    public function update(EmployeeUpdateRequest $request, $id)
+    public function update(EmployeeUpdateRequest $request, Employee $employee)
     {
         try {
             $data = $request->validated();
-            $employee = $this->service->find($id);
-            if(!$employee){
-                $data = [
-                    'message' => __('response.bad_request_long')
-                ];
-                return bodyResponseRequest( EnumResponse::NOT_FOUND, $data);  
-            } else {
-                $user = $this->serviceUser->update($data, $employee['user_id']);
-                $model = $this->service->update($data, $employee['id']);
-                $data = new EmployeeResource($model);
-                return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
-            }
+            $user = $this->serviceUser->update($data, $employee['user_id']);
+            $model = $this->service->update($data, $employee);
+            $data = new EmployeeResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
           } catch (\Exception $e) {
             return $e;
           }
