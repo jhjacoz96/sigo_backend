@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Image;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProductService {
 
@@ -37,7 +39,7 @@ class ProductService {
     public function store ($data) {
         try {
             DB::beginTransaction();
-            $model = Product::create([
+            $product = Product::create([
                 'slug' => \Str::slug($data['name']),
                 'code' => $data['code'],
                 'name' => $data['name'],
@@ -48,8 +50,17 @@ class ProductService {
                 'comment' => $data['comment'],
                 'category_id' => $data['category_id']
             ]);
+            $file = Cloudinary::upload($data['image']->getRealPath(),
+                [
+                    "folder" => "sigo/product",
+                ]
+            );
+            $product->image()->create([
+                'url' => $file->getSecurePath(),
+                'public_id' => $file->getPublicId()
+            ]);
             DB::commit();
-            return  $model;
+            return  $product;
         } catch (\Exception $e) {
             DB::rollback();
             return $e;
@@ -60,20 +71,32 @@ class ProductService {
         try {
             DB::beginTransaction();
             $model = Product::updateOrCreate(
-            [
-                'id' => $id
-            ],
-            [
-                'slug' => \Str::slug($data['name']),
-                'code' => $data['code'],
-                'stock' => $data['stock'],
-                'name' => $data['name'],
-                'price_sale' => $data['price_sale'],
-                'price_purchase' => $data['price_purchase'],
-                'status' => $data['status'],
-                'comment' => $data['comment'],
-                'category_id' => $data['category_id']
-            ]);
+                [
+                    'id' => $id
+                ],
+                [
+                    'slug' => \Str::slug($data['name']),
+                    'code' => $data['code'],
+                    'stock' => $data['stock'],
+                    'name' => $data['name'],
+                    'price_sale' => $data['price_sale'],
+                    'price_purchase' => $data['price_purchase'],
+                    'status' => $data['status'],
+                    'comment' => $data['comment'],
+                    'category_id' => $data['category_id']
+                ]
+            );
+            if (gettype($data['image']) == 'object') {
+                Cloudinary::destroy($model->image->public_id);
+                $file = Cloudinary::upload($data['image']->getRealPath(),
+                    [
+                        "folder" => "sigo/product",
+                    ]
+                );
+                $model->image->url = $file->getSecurePath();
+                $model->image->public_id = $file->getPublicId();
+                $model->push();
+            };
             DB::commit();
             return  $model;
         } catch (\Exception $e) {
@@ -112,7 +135,11 @@ class ProductService {
         try {
             DB::beginTransaction();
             $model = Product::find($id);
-            $model->delete();
+            if (!empty($model->image)) {
+                Cloudinary::destroy($model->image->public_id);
+                $model->image()->delete();
+            }
+            $model->delete();  
             DB::commit();
             return true;
         } catch (\Exception $e) {

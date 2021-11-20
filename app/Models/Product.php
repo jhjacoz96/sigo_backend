@@ -17,6 +17,10 @@ class Product extends Model
         return $this->belongsTo('App\Models\Category', 'category_id', 'id');
     }
 
+    public function image () {
+        return $this->morphOne('App\Models\Image','imageable');
+    }
+
     public function decrementQuantity ($quantity) {
         $this->decrement('stock', $quantity);
     }

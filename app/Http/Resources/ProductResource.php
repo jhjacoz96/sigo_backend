@@ -20,7 +20,7 @@ class ProductResource extends JsonResource
         })->pluck('id');
         return [
             "id"=> $this->id,
-            "image" => '',
+            "image" => $this->image->url ?? null,
             'slug' => $this->slug,
             'code' => $this->code,
             'status' => $this->status,

@@ -40,7 +40,7 @@ class ProductController extends Controller
             $data = new ProductResource($product);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
           } catch (\Exception $e) {
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+            return $e;
           }
     }
 

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Client;
+use App\Models\Employee;
 
 class UserSeeder extends Seeder
 {
@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('Jhjacoz_96'),
         ]);
         
-        $client = Client::create(["name"=> 'Albani Juarez', "phone"=> '04948393', "email"=> "admin1@gmail.com",
+        $client = Employee::create(["name"=> 'Albani Juarez', "phone"=> '04948393', "email"=> "admin1@gmail.com",
             "user_id"=>  $user->id,
             "document"=> '295484022',
             "comment"=> null,
