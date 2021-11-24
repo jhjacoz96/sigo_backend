@@ -32,7 +32,7 @@ class ProductUpdateRequest extends FormRequest
             'comment' => 'sometimes|nullable|string',
             'status' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|sometimes|image'
+            'image' => 'nullable|sometimes'
         ];
     }
 }

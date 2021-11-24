@@ -20,7 +20,7 @@ class ProductService {
 
     public function index () {
         try {
-            $model = Product::where('status', 'A')->where('stock', '>', 0)->get();
+            $model = Product::where('status', 'A')->where('stock', '>', 0)->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -50,15 +50,17 @@ class ProductService {
                 'comment' => $data['comment'],
                 'category_id' => $data['category_id']
             ]);
-            $file = Cloudinary::upload($data['image']->getRealPath(),
+            if ($data['image'] != "object") {
+                $file = Cloudinary::upload($data['image']->getRealPath(),
                 [
                     "folder" => "sigo/product",
                 ]
-            );
-            $product->image()->create([
-                'url' => $file->getSecurePath(),
-                'public_id' => $file->getPublicId()
-            ]);
+                );
+                $product->image()->create([
+                    'url' => $file->getSecurePath(),
+                    'public_id' => $file->getPublicId()
+                ]);
+            }
             DB::commit();
             return  $product;
         } catch (\Exception $e) {
@@ -87,15 +89,23 @@ class ProductService {
                 ]
             );
             if (gettype($data['image']) == 'object') {
-                Cloudinary::destroy($model->image->public_id);
                 $file = Cloudinary::upload($data['image']->getRealPath(),
                     [
                         "folder" => "sigo/product",
                     ]
                 );
-                $model->image->url = $file->getSecurePath();
-                $model->image->public_id = $file->getPublicId();
-                $model->push();
+                if (!empty($model->image)) {
+                    Cloudinary::destroy($model->image->public_id);
+                    $model->image->url = $file->getSecurePath();
+                    $model->image->public_id = $file->getPublicId();
+                    $model->push();
+                } else {
+                    $model->image()->create([
+                        'url' => $file->getSecurePath(),
+                        'public_id' => $file->getPublicId()
+                    ]);
+                    $model->refresh();
+                }
             };
             DB::commit();
             return  $model;
