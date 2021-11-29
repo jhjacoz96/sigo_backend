@@ -50,7 +50,7 @@ class ProductService {
                 'comment' => $data['comment'],
                 'category_id' => $data['category_id']
             ]);
-            if ($data['image'] != "object") {
+            if ($data['image'] != 'null' && $data['image'] != "object") {
                 $file = Cloudinary::upload($data['image']->getRealPath(),
                 [
                     "folder" => "sigo/product",
@@ -88,7 +88,7 @@ class ProductService {
                     'category_id' => $data['category_id']
                 ]
             );
-            if (gettype($data['image']) == 'object') {
+            if (gettype($data['image'] != 'null' && $data['image']) == 'object') {
                 $file = Cloudinary::upload($data['image']->getRealPath(),
                     [
                         "folder" => "sigo/product",
