@@ -14,10 +14,10 @@ class AddFieldsOrderTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('name_delivery');
-            $table->string('phone_delivery');
-            $table->decimal('cost_delivery', 12, 2);
-            $table->text('address_delivery');
+            $table->string('name_delivery')->nullable();
+            $table->string('phone_delivery')->nullable();
+            $table->decimal('cost_delivery', 12, 2)->nullable();
+            $table->text('address_delivery')->nullable();
             $table->text('comment_delivery')->nullable();
         });
     }
