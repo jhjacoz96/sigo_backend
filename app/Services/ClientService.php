@@ -16,7 +16,16 @@ class ClientService {
 
     }
 
-    public function index () {
+    public function index ($params) {
+        try {
+            $model = Client::orderBy('id', 'desc')->paginate($params['sizePage']);
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function indexAll () {
         try {
             $model = Client::All();
             return $model;

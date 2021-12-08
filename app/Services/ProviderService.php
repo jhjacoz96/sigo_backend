@@ -16,7 +16,16 @@ class ProviderService {
 
     }
 
-    public function index () {
+    public function index ($params) {
+        try {
+            $model = Provider::orderBy('id', 'desc')->paginate($params['sizePage']);
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function indexAll () {
         try {
             $model = Provider::All();
             return $model;

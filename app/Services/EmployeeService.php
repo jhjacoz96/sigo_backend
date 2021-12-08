@@ -16,9 +16,9 @@ class EmployeeService {
 
     }
 
-    public function index () {
+    public function index ($params) {
         try {
-            $model = Employee::All();
+            $model = Employee::orderBy('id', 'desc')->paginate($params['sizePage']);
             return $model;
         } catch (\Exception $e) {
             return $e;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use App\Http\Resources\ClientResource;
+use App\Http\Resources\ClientPaginateResource;
 use App\Services\ClientService;
 use App\Services\UserService;
 use App\Http\Requests\ClientStoreRequest;
@@ -19,10 +20,21 @@ class ClientController extends Controller
         $this->serviceUser = $_UserService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $model = $this->service->index();
+            $model = $this->service->index($request);
+            $data = new ClientPaginateResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');
+        }
+    }
+
+    public function indexAll ()
+    {
+        try {
+            $model = $this->service->indexAll();
             $data = ClientResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
@@ -70,7 +82,7 @@ class ClientController extends Controller
             $data = new ClientResource($client);
             return bodyResponseRequest(EnumResponse::SUCCESS, $data);
         } catch (\Exception $e) {
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.show');
+            return $e;
         }
     }
 

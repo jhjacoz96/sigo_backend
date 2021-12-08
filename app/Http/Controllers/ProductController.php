@@ -19,11 +19,11 @@ class ProductController extends Controller
         $this->service = $_ProductService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $model = $this->service->index();
-            $data = ProductResource::collection($model);
+            $model = $this->service->index($request);
+            $data = new ProductPaginateResource($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');

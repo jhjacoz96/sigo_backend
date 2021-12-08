@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductPaginateResource extends JsonResource
+class ClientPaginateResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,11 +20,11 @@ class ProductPaginateResource extends JsonResource
             "perPage" => $this->perPage(),
             "lastPage" => $this->lastPage(),
             "fromPage" => $this->firstItem(),
-            "to" => $this->lastPage(),
+            "to" => $this->lastPage()
         ];
         return [
             "paginate" => $paginate,
-             "data" => ProductResource::collection($this->items()),
+             "data" => ClientResource::collection($this->items()),
         ];
     }
 }

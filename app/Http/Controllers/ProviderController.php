@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Provider;
 use App\Http\Resources\ProviderResource;
+use App\Http\Resources\ProviderPaginateResource;
 use App\Services\ProviderService;
 use App\Services\UserService;
 use App\Http\Requests\ProviderStoreRequest;
@@ -18,10 +19,21 @@ class ProviderController extends Controller
         $this->service = $_ProviderService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $model = $this->service->index();
+            $model = $this->service->index($request);
+            $data = new ProviderPaginateResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');
+        }
+    }
+
+    public function indexAll()
+    {
+        try {
+            $model = $this->service->indexAll();
             $data = ProviderResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {

@@ -33,7 +33,12 @@ class OrderService {
                 'client_id' => $data['client_id'],
                 'total' => $data['total'],
                 'code' => $code,
-                'status' => 'verificar'
+                'status' => 'verificar',
+                'name_delivery' => $data['name_delivery'],
+                'phone_delivery' => $data['phone_delivery'],
+                'cost_delivery' => $data['cost_delivery'],
+                'address_delivery' => $data['address_delivery'],
+                'comment_delivery' => $data['comment_delivery'] ?? null,
             ]);
             $model->syncProducts($data['products']);
             DB::commit();
@@ -51,7 +56,12 @@ class OrderService {
             $order->update([
                 'type_payment' => $data['type_payment'],
                 'total' => $data['total'],
-                'status' => $data['status']
+                'status' => $data['status'],
+                'name_delivery' => $data['name_delivery'],
+                'phone_delivery' => $data['phone_delivery'],
+                'cost_delivery' => $data['cost_delivery'],
+                'address_delivery' => $data['address_delivery'],
+                'comment_delivery' => $data['comment_delivery'] ?? null,
             ]);
             $validate = $data['products'] ?? null;
             if (!is_null($validate))
@@ -79,10 +89,10 @@ class OrderService {
         }
     }
 
-    public function indexClient () {
+    public function indexClient ($params) {
         try {
             $client = \Auth::user()->client;
-            $model = $client->orders->sortByDesc('id');
+            $model = Order::where('client_id', $client->id)->orderBy('id', 'desc')->paginate($params['sizePage']);
             return  $model;
         } catch (\Exception $e) {
             return $e;

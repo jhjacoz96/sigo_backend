@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\EmployeePaginateResource;
 use App\Services\EmployeeService;
 use App\Services\UserService;
 use App\Http\Requests\EmployeeStoreRequest;
@@ -20,11 +21,11 @@ class EmployeeController extends Controller
         $this->serviceUser = $_UserService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $model = $this->service->index();
-            $data = EmployeeResource::collection($model);
+            $model = $this->service->index($request);
+            $data = new EmployeePaginateResource($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');

@@ -22,6 +22,11 @@ class OrderResource extends JsonResource
             'client' => new ClientResource($this->client),
             'total' => $this->total,
             'status' => $this->status,
+            'name_delivery' => $this->name_delivery,
+            'phone_delivery' => $this->phone_delivery,
+            'cost_delivery' => $this->cost_delivery,
+            'address_delivery' => $this->address_delivery,
+            'comment_delivery' => $this->comment_delivery ?? null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'products' => OrderProductResource::collection($this->products)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\CategoryPaginateResource;
 use App\Services\CategoryService;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
@@ -17,10 +18,21 @@ class CategoryController extends Controller
         $this->service = $_CategoryService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $model = $this->service->index();
+            $model = $this->service->index($request);
+            $data = new CategoryPaginateResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');
+        }
+    }
+
+    public function indexAll()
+    {
+        try {
+            $model = $this->service->indexAll();
             $data = CategoryResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {

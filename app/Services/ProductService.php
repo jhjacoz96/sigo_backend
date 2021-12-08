@@ -18,9 +18,9 @@ class ProductService {
 
     }
 
-    public function index () {
+    public function index ($params) {
         try {
-            $model = Product::where('status', 'A')->where('stock', '>', 0)->orderBy('id', 'desc')->get();
+            $model = Product::where('status', 'A')->where('stock', '>', 0)->orderBy('id', 'desc')->paginate($params['sizePage']);
             return $model;
         } catch (\Exception $e) {
             return $e;

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductPaginateResource extends JsonResource
+class RolePaginateResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -24,7 +24,7 @@ class ProductPaginateResource extends JsonResource
         ];
         return [
             "paginate" => $paginate,
-             "data" => ProductResource::collection($this->items()),
+             "data" => RoleHasPermissionsResource::collection($this->items()),
         ];
     }
 }

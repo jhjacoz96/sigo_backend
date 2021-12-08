@@ -62,9 +62,9 @@ class ExpenseController extends Controller
           }
     }
 
-    public function indexClient () {
+    public function indexClient (Request $request) {
         try {
-            $model = $this->service->indexClient();
+            $model = $this->service->indexClient($request);
             $data = ExpenseResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {

@@ -16,10 +16,10 @@ class FavoriteService {
     {
     }
 
-    public function index () {
+    public function index ($params) {
         try {
             $client = \Auth::user()->client;
-            $model = $client->favorite;
+            $model = Favorite::where('client_id', $client->id)->orderBy('id', 'desc')->paginate($params['sizePage']);
             return $model;
         } catch (\Exception $e) {
             return $e;

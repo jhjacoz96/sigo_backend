@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Favorite;
 use App\Http\Resources\FavoriteResource;
+use App\Http\Resources\FavoritePaginateResource;
 use App\Services\FavoriteService;
 use App\Services\ClientService;
 use App\Http\Requests\FavoriteAddRequest;
@@ -19,11 +20,11 @@ class FavoriteController extends Controller
         $this->serviceClient = $_ClientService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
        try {
-            $model = $this->service->index();
-            $data = FavoriteResource::collection($model);
+            $model = $this->service->index($request);
+            $data = new FavoritePaginateResource($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');

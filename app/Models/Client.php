@@ -40,4 +40,8 @@ class Client extends Model
      public function type_document () {
         return $this->belongsTo('App\Models\TypeDocument', 'type_document_id', 'id');
     }
+
+    public function saleClients () {
+        return $this->hasMany(SaleClient::class);
+    }
 }

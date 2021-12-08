@@ -40,9 +40,12 @@ class Expense extends Model
             if (!empty($productWithPivot)) {
                 $product->decrementQuantity($productWithPivot->pivot->quantity);
                 $product->incrementQuantity($item['quantity']);
+                // $product->price_purchase = $item['price_purchase'];
             } else {
                 $product->incrementQuantity($item['quantity']);
+                // $product->price_purchase = $item['price_purchase'];
             }
+            // $product->save();
         }
         $resultSync = $this->products()->sync($data);
         foreach ($resultSync['detached'] as $key => $id) {

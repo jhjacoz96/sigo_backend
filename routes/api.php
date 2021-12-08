@@ -15,6 +15,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SaleClientController;
+use App\Http\Controllers\SaleSystemController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -54,14 +56,34 @@ Route::group([
         Route::ApiResource('employee', EmployeeController::class);
         Route::prefix('role')->group(function() {
              Route::get('', [RoleController::class, 'index']);
+              Route::get('all', [RoleController::class, 'indexAll']);
              Route::post('', [RoleController::class, 'store']);
              Route::put('{role}', [RoleController::class, 'update']);
              Route::delete('{role}', [RoleController::class, 'delete']);
              Route::get('permission', [RoleController::class, 'indexPermission']);
         });
-        Route::ApiResource('client', ClientController::class);
-        Route::ApiResource('provider', ProviderController::class);
-        Route::ApiResource('category', CategoryController::class);
+        Route::prefix('category')->group(function() {
+             Route::get('', [CategoryController::class, 'index']);
+             Route::get('all', [CategoryController::class, 'indexAll']);
+             Route::post('', [CategoryController::class, 'store']);
+             Route::put('{category}', [CategoryController::class, 'update']);
+             Route::delete('{category}', [CategoryController::class, 'delete']);
+        });
+        Route::prefix('client')->group(function() {
+             Route::get('', [ClientController::class, 'index']);
+             Route::get('all', [ClientController::class, 'indexAll']);
+             Route::post('', [ClientController::class, 'store']);
+             Route::get('{client}', [ClientController::class, 'show']);
+             Route::put('{client}', [ClientController::class, 'update']);
+             Route::delete('{client}', [ClientController::class, 'delete']);
+        });
+        Route::prefix('provider')->group(function() {
+             Route::get('', [ProviderController::class, 'index']);
+             Route::get('all', [ProviderController::class, 'indexAll']);
+             Route::post('', [ProviderController::class, 'store']);
+             Route::put('{provider}', [ProviderController::class, 'update']);
+             Route::delete('{provider}', [ProviderController::class, 'delete']);
+        });
         Route::ApiResource('product', ProductController::class);
         Route::prefix('cart')->group(function () {
             Route::post('add', [CartController::class, 'add']);
@@ -89,6 +111,16 @@ Route::group([
             Route::put('{expense}', [ExpenseController::class, 'update']);
             Route::delete('{expense}', [ExpenseController::class, 'destroy']);
         });
+        Route::prefix('sale-client')->group(function () {
+            Route::post('', [SaleClientController::class, 'store']);
+            Route::get('', [SaleClientController::class, 'index']);
+            Route::get('amouth-available/{client}', [SaleClientController::class, 'amouthAvailable']);
+            Route::get('/historial-pay/{client}', [SaleClientController::class, 'getHistorialPay']);
+            Route::get('{sale-client}', [SaleClientController::class, 'show']);
+        });
+        Route::prefix('sale-system')->group(function () {
+            Route::get('dashboard', [SaleSystemController::class, 'dashboard']);
+        });
     });
     Route::prefix('store')->group(function () {
         Route::ApiResource('category', CategoryController::class);
@@ -102,6 +134,7 @@ Route::group([
         });
         Route::prefix('cart')->group(function () {
             Route::get('', [CartController::class, 'indexClient']);
+            Route::get('all', [CartController::class, 'indexClientAll']);
             Route::post('', [CartController::class, 'add']);
             Route::post('masive', [CartController::class, 'addMasive']);
             Route::put('{cart}', [CartController::class, 'update']);

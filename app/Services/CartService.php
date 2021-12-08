@@ -17,10 +17,20 @@ class CartService {
 
     }
 
-    public function indexClient () {
+    public function indexClient ($params) {
         try {
             $client = User::getModelAuth();
-            $model = $client->cart;
+            $model = Cart::where('client_id', $client->id)->orderBy('id', 'desc')->paginate($params['sizePage']);
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function indexClientAll () {
+        try {
+            $client = User::getModelAuth();
+            $model = Cart::where('client_id', $client->id)->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -64,9 +74,14 @@ class CartService {
     public function store ($data, $client) {
         try {
             DB::beginTransaction();
-            $client->cartProducts()->attach($data['product_id'], [ 'quantity' => $data['quantity']]);
+            // $client->cartProducts()->attach($data['product_id'], [ 'quantity' => $data['quantity']]);
+            $model = Cart::create([
+                'client_id' => $client['id'],
+                'product_id' => $data['product_id'],
+                'quantity' => $data['quantity'],
+            ]);
             DB::commit();
-            return  true;
+            return  $model;
         } catch (\Exception $e) {
             DB::rollback();
             return $e;
@@ -89,11 +104,17 @@ class CartService {
     public function update ($data, $client) {
         try {
             DB::beginTransaction();
-            $client->cartProducts()->updateExistingPivot($data['product_id'], [
+            /* $client->cartProducts()->updateExistingPivot($data['product_id'], [
                 'quantity' => $data['quantity']
+            ]); */
+            $model = Cart::updateOrCreate([
+                'client_id' => $client['id'],
+                'product_id' => $data['product_id'],
+            ], [
+                'quantity' => $data['quantity'],
             ]);
             DB::commit();
-            return  true;
+            return  $model;
         } catch (\Exception $e) {
             DB::rollback();
             return $e;

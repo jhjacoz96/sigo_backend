@@ -92,10 +92,10 @@ class OrderController extends Controller
           }
     }
 
-    public function indexClient () {
+    public function indexClient (Request $request) {
         try {
-            $model = $this->service->indexClient();
-            $data = OrderResource::collection($model);
+            $model = $this->service->indexClient($request);
+            $data = new OrderPaginationResource($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');

@@ -59,10 +59,10 @@ class ExpenseService {
         }
     }
 
-    public function indexClient () {
+    public function indexClient ($params) {
         try {
             $client = \Auth::user()->client;
-            $model = $client->expenses;
+            $model = Expense::where('client_id', $client->id)->orderBy('id', 'desc')->paginate($params['sizePage']);
             return  $model;
         } catch (\Exception $e) {
             return $e;

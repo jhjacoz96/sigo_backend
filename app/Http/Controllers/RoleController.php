@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Resources\RoleHasPermissionsResource;
+use App\Http\Resources\RolePaginateResource;
 use App\Services\RoleService;
 use App\Http\Requests\RoleStoreRequest;
 use App\Http\Requests\RoleUpdateRequest;
@@ -17,10 +18,21 @@ class RoleController extends Controller
         $this->service = $_RoleService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $model = $this->service->index();
+            $model = $this->service->index($request);
+            $data = new RolePaginateResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');
+        }
+    }
+
+    public function indexAll()
+    {
+        try {
+            $model = $this->service->indexAll();
             $data = RoleHasPermissionsResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
