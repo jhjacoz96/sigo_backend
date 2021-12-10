@@ -55,7 +55,6 @@ class SaleClientService {
             });
             $data = [];
             foreach ($monthsAvailable as $key => $month) {
-                dump($month);
                 array_push($data, $month);
             }
             return $data;
