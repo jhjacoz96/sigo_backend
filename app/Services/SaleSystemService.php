@@ -28,6 +28,10 @@ class SaleSystemService {
             } else {
                 $last_month = $month - 1;
             }
+            $year = strval($year);
+            $month = strval($month);
+            $last_year = strval($last_year);
+            $last_month = strval($last_month);
             // $year = $params['mes'] === 'actual' ? $year : $last_year;
             // $month = $params['mes'] === 'actual' ? $month : $last_month;
             //datos a mostrar

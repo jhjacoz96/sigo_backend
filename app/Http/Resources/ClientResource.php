@@ -24,6 +24,10 @@ class ClientResource extends JsonResource
         } else {
             $last_month = $month - 1;
         }
+        $year = strval($year);
+        $month = strval($month);
+        $last_year = strval($last_year);
+        $last_month = strval($last_month);
         $current_orders = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $month)->whereYear('created_at', $year);
         $last_orders = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $last_month)->whereYear('created_at', $last_year);
         return [

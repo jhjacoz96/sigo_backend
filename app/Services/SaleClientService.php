@@ -36,18 +36,18 @@ class SaleClientService {
 
     public function amouthAvailable ($data, $client) {
         try {
-            $nowYear = isset($data['year']) ? $data['year'] : Carbon::now()->format('Y');
+            $nowYear = isset($data['year']) ? strval($data['year']) : Carbon::now()->format('Y');
             $monthsAvailable = $this->months->filter(function ($month) use($nowYear, $client) {
                 $e = $client->saleClients()->where('year', $nowYear)->where('month', $month)->first();
                 return empty($e);
             })->map(function ($month) use($nowYear, $client) {
-                $nowMouth = array_search($month, $this->months->toArray()) + 1;
+                $nowMouth = strval(array_search($month, $this->months->toArray()) + 1);
                 $orders = $client->orders()->where('status', 'enviado')->whereMonth('created_at',  $nowMouth)->whereYear('created_at', $nowYear);
                 $sale_amount = $orders->sum('total');
                 $sale_quantity = $orders->count();
                 $sale_commission = $sale_quantity * 500.00;
                 return [
-                    'month' => ucwords($month),
+                    'month' => $month,
                     'sale_amount' => $sale_amount,
                     'sale_quantity' =>  $sale_quantity,
                     'sale_commission' => $sale_commission

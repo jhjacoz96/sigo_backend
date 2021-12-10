@@ -24,6 +24,10 @@ class SaleClientResource extends JsonResource
         } else {
             $last_month = $month - 1;
         }
+        $year = strval($year);
+        $month = strval($month);
+        $last_year = strval($last_year);
+        $last_month = strval($last_month);
         $current_total_sale = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $month)->whereYear('created_at', $year)->sum('total');
         $last_total_sale = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $last_month)->whereYear('created_at', $last_year)->sum('total');
         $current_quantity_sale = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $month)->whereYear('created_at', $year)->count();
