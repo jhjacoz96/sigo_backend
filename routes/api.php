@@ -53,7 +53,12 @@ Route::group([
             Route::post('', [Controller::class, 'updateOrganization']);
             Route::get('', [Controller::class, 'showOrganization']);
         });
-        Route::ApiResource('employee', EmployeeController::class);
+        Route::prefix('employee')->group(function() {
+             Route::get('', [EmployeeController::class, 'index']);
+             Route::post('', [EmployeeController::class, 'store']);
+             Route::put('{employee}', [EmployeeController::class, 'update']);
+             Route::delete('{employee}', [EmployeeController::class, 'delete']);
+        });
         Route::prefix('role')->group(function() {
              Route::get('', [RoleController::class, 'index']);
               Route::get('all', [RoleController::class, 'indexAll']);

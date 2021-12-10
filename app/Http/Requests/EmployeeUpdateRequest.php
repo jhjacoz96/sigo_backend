@@ -26,7 +26,6 @@ class EmployeeUpdateRequest extends FormRequest
     public function rules()
     {
         $employee = request()->route('employee');
-        dump($employee);
         return [
             'name' => 'required|string',
             'phone' => 'required|string',
