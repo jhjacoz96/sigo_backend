@@ -25,7 +25,7 @@ class SaleClientStoreRequest extends FormRequest
     {
         return [
             'month' => 'required|string',
-            'year' => 'required|string',
+            'year' => 'required|integer',
             'client_id' => 'required|integer|exists:clients,id',
         ];
     }
