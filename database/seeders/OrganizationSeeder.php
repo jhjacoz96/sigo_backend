@@ -16,10 +16,10 @@ class OrganizationSeeder extends Seeder
     {
         $data = Organization::create([
         	'name' => 'Zapateria 59',
-            'currency' => 'USD',
+            'currency' => 'CLP',
             'address' => 'Av las delicias',
-            'city' => 'Barquisimeto',
-            'country' => 'Venezuela',
+            'city' => 'Santiago De Chile',
+            'country' => 'Chile',
             'phone' => '494829384',
             'document' => '444444444',
             'type_document_id' => 2

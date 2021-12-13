@@ -15,17 +15,31 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::create([
-            'email' => 'admin1@gmail.com',
-            'password' => bcrypt('Jhjacoz_96'),
+        $user_one = User::create([
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('Admin_96'),
         ]);
         
-        $client = Employee::create(["name"=> 'Albani Juarez', "phone"=> '04948393', "email"=> "admin1@gmail.com",
-            "user_id"=>  $user->id,
+        $client_one = Employee::create(["name"=> 'Albani Juarez', "phone"=> '04948393', "email"=> "admin@gmail.com",
+            "user_id"=>  $user_one->id,
             "document"=> '295484022',
-            "comment"=> null,
+            "comment"=> '',
             "type_document_id"=> 1,
             "status"=> 'A'
         ]);
+
+        $user_two = User::create([
+            'email' => 'admin1@gmail.com',
+            'password' => bcrypt('Admin_96'),
+        ]);
+        
+        $client_two = Employee::create(["name"=> 'Jhon Contreras', "phone"=> '04948393', "email"=> "admin1@gmail.com",
+            "user_id"=>  $user_two->id,
+            "document"=> '26378059',
+            "comment"=> '',
+            "type_document_id"=> 1,
+            "status"=> 'A'
+        ]);
+
     }
 }
