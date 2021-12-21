@@ -91,9 +91,11 @@ class OrderService {
 
     public function indexClient ($params) {
         try {
-            $client = \Auth::user()->client;
-            $model = Order::where('client_id', $client->id)->orderBy('id', 'desc')->paginate($params['sizePage']);
-            return  $model;
+           $client = \Auth::user()->client;
+           $q = Order::where('client_id', $client->id)->orderBy('id', 'desc');
+           !empty($params['search']) ? $model = $q->where('code', 'like','%'.$params['search'] .'%') : '';
+            $model = $q->paginate($params['sizePage']);
+            return $model;
         } catch (\Exception $e) {
             return $e;
         }
@@ -101,8 +103,15 @@ class OrderService {
 
     public function index ($params) {
         try {
-            $model = Order::where('status', $params['status'])->orderBy('id', 'desc')->paginate($params['sizePage']);
-            return  $model;
+            $q = Order::orderBy('id', 'desc');
+            !empty($params['status']) ? $model = $q->where('status', $params['status']) : '';
+            !empty($params['search']) ? $model = $q->where('code', 'like','%'.$params['search'] .'%')
+                                                 ->orWhereHas('client', function($query) use($params) {
+                                                    $query->where('name', 'like','%'.$params['search'] .'%')
+                                                    ->orWhere('document', 'like','%'.$params['search'] .'%');
+                                                 }) : '';
+            $model = $q->paginate($params['sizePage']);
+            return $model;
         } catch (\Exception $e) {
             return $e;
         }

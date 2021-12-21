@@ -71,8 +71,13 @@ class ExpenseService {
 
     public function index ($params) {
         try {
-            $model = Expense::orderBy('id', 'desc')->paginate($params['sizePage']);
-            return  $model;
+            $q = Expense::orderBy('id', 'desc');
+            !empty($params['search']) ? $model = $q->whereHas('provider', function($query) use($params) {
+                                                    $query->where('name', 'like','%'.$params['search'] .'%')
+                                                    ->orWhere('document', 'like','%'.$params['search'] .'%');
+                                                 }) : '';
+            $model = $q->paginate($params['sizePage']);
+            return $model;
         } catch (\Exception $e) {
             return $e;
         }

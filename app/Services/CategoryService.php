@@ -18,7 +18,10 @@ class CategoryService {
 
     public function index ($params) {
         try {
-            $model = Category::orderBy('id', 'desc')->paginate($params['sizePage']);
+            $q = Category::orderBy('id', 'desc');
+            !empty($params['search']) ? $model = $q->where('name', 'like','%'.$params['search'] .'%')
+                                                 ->orWhere('slug', 'like','%'.$params['search'] .'%') : '';
+            $model = $q->paginate($params['sizePage']);
             return $model;
         } catch (\Exception $e) {
             return $e;

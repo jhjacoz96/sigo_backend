@@ -19,7 +19,9 @@ class RoleService {
 
     public function index ($params) {
         try {
-            $model = Role::orderBy('id', 'desc')->paginate($params['sizePage']);
+            $q = Role::orderBy('id', 'desc');
+            !empty($params['search']) ? $model = $q->where('name', 'like','%'.$params['search'] .'%') : '';
+            $model = $q->paginate($params['sizePage']);
             return $model;
         } catch (\Exception $e) {
             return $e;

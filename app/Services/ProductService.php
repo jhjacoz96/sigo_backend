@@ -20,7 +20,13 @@ class ProductService {
 
     public function index ($params) {
         try {
-            $model = Product::where('status', 'A')->where('stock', '>', 0)->orderBy('id', 'desc')->paginate($params['sizePage']);
+            $q = Product::where('status', 'A')->where('stock', '>', 0)->orderBy('id', 'desc');
+            !empty($params['search']) ? $model = $q->where(function($query) use($params) {
+                $query->where('name', 'like','%'.$params['search'] .'%')
+                 ->orWhere('slug', 'like','%'.$params['search'] .'%')
+                 ->orWhere('code', 'like','%'.$params['search'] .'%');
+            }) : '';
+            $model = $q->paginate($params['sizePage']);
             return $model;
         } catch (\Exception $e) {
             return $e;

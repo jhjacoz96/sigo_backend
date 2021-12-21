@@ -18,7 +18,11 @@ class EmployeeService {
 
     public function index ($params) {
         try {
-            $model = Employee::orderBy('id', 'desc')->paginate($params['sizePage']);
+            $q = Employee::where('status', 'A');
+            !empty($params['search']) ? $model = $q->where('name', 'like','%'.$params['search'] .'%') 
+                                                 ->orWhere('document', 'like','%'.$params['search'] .'%')
+                                                 ->orWhere('email', 'like','%'.$params['search'] .'%') : '';
+            $model = $q->orderBy('id', 'desc')->paginate($params['sizePage']);
             return $model;
         } catch (\Exception $e) {
             return $e;

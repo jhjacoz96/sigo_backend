@@ -18,7 +18,11 @@ class ClientService {
 
     public function index ($params) {
         try {
-            $model = Client::orderBy('id', 'desc')->paginate($params['sizePage']);
+            $q = Client::orderBy('id', 'desc');
+            !empty($params['search']) ? $model = $q->where('name', 'like','%'.$params['search'] .'%')
+                                                 ->orWhere('email', 'like','%'.$params['search'] .'%')
+                                                 ->orWhere('document', 'like','%'.$params['search'] .'%') : '';
+            $model = $q->paginate($params['sizePage']);
             return $model;
         } catch (\Exception $e) {
             return $e;

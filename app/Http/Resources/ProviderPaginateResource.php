@@ -24,7 +24,7 @@ class ProviderPaginateResource extends JsonResource
         ];
         return [
             "paginate" => $paginate,
-             "data" => ProductResource::collection($this->items()),
+             "data" => ProviderResource::collection($this->items()),
         ];
     }
 }

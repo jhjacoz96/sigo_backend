@@ -18,8 +18,12 @@ class SaleClientService {
 
     public function index ($params) {
         try {
-            $client = Client::where('status', 'A')->orderBy('id', 'desc')->paginate($params['sizePage']);
-            return $client;
+            $q = Client::where('status', 'A')->orderBy('id', 'desc');
+            !empty($params['search']) ? $model = $q->where('name', 'like','%'.$params['search'] .'%')
+                                                 ->orWhere('email', 'like','%'.$params['search'] .'%')
+                                                 ->orWhere('document', 'like','%'.$params['search'] .'%') : '';
+            $model = $q->paginate($params['sizePage']);
+            return $model;
         } catch (\Exception $e) {
             return $e;
         }

@@ -15,7 +15,9 @@ class UserHasRoleSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::find(1);
-        $user->assignRole('Administrador');
+        $user_one = User::find(1);
+        $user_two = User::find(2);
+        $user_one->assignRole('Administrador');
+        $user_two->assignRole('Administrador');
     }
 }

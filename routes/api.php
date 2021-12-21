@@ -55,6 +55,7 @@ Route::group([
         });
         Route::prefix('employee')->group(function() {
              Route::get('', [EmployeeController::class, 'index']);
+             Route::delete('{employee}', [EmployeeController::class, 'delete']);
              Route::post('', [EmployeeController::class, 'store']);
              Route::put('{employee}', [EmployeeController::class, 'update']);
              Route::delete('{employee}', [EmployeeController::class, 'delete']);
@@ -114,7 +115,7 @@ Route::group([
             Route::get('', [ExpenseController::class, 'index']);
             Route::get('{expense}', [ExpenseController::class, 'show']);
             Route::put('{expense}', [ExpenseController::class, 'update']);
-            Route::delete('{expense}', [ExpenseController::class, 'destroy']);
+            Route::delete('{expense}', [ExpenseController::class, 'destroy']); 
         });
         Route::prefix('sale-client')->group(function () {
             Route::post('', [SaleClientController::class, 'store']);
