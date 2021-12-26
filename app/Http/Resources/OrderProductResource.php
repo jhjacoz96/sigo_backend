@@ -19,6 +19,7 @@ class OrderProductResource extends JsonResource
             "product_id"=> $this->id,
             'slug' => $this->slug,
             'code' => $this->code,
+            'image' => $this->image ? $this->image->url : null,
             'name' => $this->name,
             'price_sale' => $this->pivot->price,
             'price_purchase' => $this->price_purchase,

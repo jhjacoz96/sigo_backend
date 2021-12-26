@@ -5,8 +5,10 @@ namespace App\Services;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\Models\Order;
+use App\Models\User;
 
 class OrderService {
 
@@ -41,6 +43,19 @@ class OrderService {
                 'comment_delivery' => $data['comment_delivery'] ?? null,
             ]);
             $model->syncProducts($data['products']);
+            // send email
+            $users = User::role('Administrador')->get();
+            $client = $model->client;
+            $users->each(function (User $user) use($model, $client) {
+                $data = [
+                    "employee" => $user->employee,
+                    "order" =>  $model,
+                    "client" => $client,
+                ];
+                Mail::send('email.newOrder', $data,function($message) use($user){
+                    $message->to($user["email"])->subject('Nueva orden - Sigo');
+                });
+            });
             DB::commit();
             $model->refresh();
             return  $model;
@@ -133,7 +148,6 @@ class OrderService {
         try {
             DB::beginTransaction();
             $order->delete();
-            $order->refresh();
             DB::commit();
             return true;
         } catch (\Exception $e) {
