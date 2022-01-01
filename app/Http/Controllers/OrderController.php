@@ -48,8 +48,8 @@ class OrderController extends Controller
        try {
             $data = $request->validated();
             $model = $this->service->store($data);
+            return $model;
             $client = $this->serviceClient->find($model->client_id);
-            return $client;
             $this->serviceCart->destroyAll($client);
             $data = new OrderResource($model);
             $message =  __('response.order.create_success');
