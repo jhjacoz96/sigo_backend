@@ -44,7 +44,7 @@ class OrderService {
             ]);
             $model->syncProducts($data['products']);
             // send email
-            /* $users = User::role('Administrador')->get();
+            $users = User::role('Administrador')->get();
             $client = $model->client;
             $users->each(function (User $user) use($model, $client) {
                 $data = [
@@ -55,7 +55,7 @@ class OrderService {
                 Mail::send('email.newOrder', $data,function($message) use($user){
                     $message->to($user["email"])->subject('Nueva orden - Sigo');
                 });
-            }); */
+            });
             DB::commit();
             $model->refresh();
             return  $model;
