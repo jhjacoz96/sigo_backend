@@ -55,17 +55,16 @@ Route::group([
         });
         Route::prefix('employee')->group(function() {
              Route::get('', [EmployeeController::class, 'index']);
-             Route::delete('{employee}', [EmployeeController::class, 'delete']);
              Route::post('', [EmployeeController::class, 'store']);
              Route::put('{employee}', [EmployeeController::class, 'update']);
-             Route::delete('{employee}', [EmployeeController::class, 'delete']);
+             Route::delete('{employee}', [EmployeeController::class, 'destroy']);
         });
         Route::prefix('role')->group(function() {
              Route::get('', [RoleController::class, 'index']);
               Route::get('all', [RoleController::class, 'indexAll']);
              Route::post('', [RoleController::class, 'store']);
              Route::put('{role}', [RoleController::class, 'update']);
-             Route::delete('{role}', [RoleController::class, 'delete']);
+             Route::delete('{role}', [RoleController::class, 'destroy']);
              Route::get('permission', [RoleController::class, 'indexPermission']);
         });
         Route::prefix('category')->group(function() {
@@ -73,7 +72,7 @@ Route::group([
              Route::get('all', [CategoryController::class, 'indexAll']);
              Route::post('', [CategoryController::class, 'store']);
              Route::put('{category}', [CategoryController::class, 'update']);
-             Route::delete('{category}', [CategoryController::class, 'delete']);
+             Route::delete('{category}', [CategoryController::class, 'destroy']);
         });
         Route::prefix('client')->group(function() {
              Route::get('', [ClientController::class, 'index']);
@@ -81,14 +80,14 @@ Route::group([
              Route::post('', [ClientController::class, 'store']);
              Route::get('{client}', [ClientController::class, 'show']);
              Route::put('{client}', [ClientController::class, 'update']);
-             Route::delete('{client}', [ClientController::class, 'delete']);
+             Route::delete('{client}', [ClientController::class, 'destroy']);
         });
         Route::prefix('provider')->group(function() {
              Route::get('', [ProviderController::class, 'index']);
              Route::get('all', [ProviderController::class, 'indexAll']);
              Route::post('', [ProviderController::class, 'store']);
              Route::put('{provider}', [ProviderController::class, 'update']);
-             Route::delete('{provider}', [ProviderController::class, 'delete']);
+             Route::delete('{provider}', [ProviderController::class, 'destroy']);
         });
         Route::ApiResource('product', ProductController::class);
         Route::prefix('cart')->group(function () {

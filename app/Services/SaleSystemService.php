@@ -37,11 +37,16 @@ class SaleSystemService {
             //datos a mostrar
             $current_orders = Order::where('status', 'enviado')->whereMonth('created_at',  $month)->whereYear('created_at', $year);
             $last_orders = Order::where('status', 'enviado')->whereMonth('created_at',  $last_month)->whereYear('created_at', $last_year);
-
-            $current_count_sale = $current_orders->count();
+            $current_count_sale = 0;
+            foreach ($current_orders->get() as $key => $value) {
+                $current_count_sale += $value->products->sum('pivot.quantity');
+            }
             $current_amount_sale = $current_orders->sum('total');
             $current_commission_sale = $current_count_sale * 200.00;
-            $last_count_sale = $last_orders->count();
+            $last_count_sale = 0;
+            foreach ($last_orders->get() as $key => $value) {
+                $last_count_sale += $value->products->sum('pivot.quantity');
+            }
             $last_amount_sale = $last_orders->sum('total');
             $last_commission_sale = $last_count_sale * 200.00;
             // data the chart
@@ -51,7 +56,12 @@ class SaleSystemService {
             for ($i=0; $i <= intval($last_day) - 1 ; $i++) {
                 $day = $i + 1;
                 $labels[$i] = $day;
-                $data[$i] =  Order::where('status', 'enviado')->whereDay('created_at', $day)->whereMonth('created_at',  $month)->whereYear('created_at', $year)->count();
+                $orders = Order::where('status', 'enviado')->whereDay('created_at', $day)->whereMonth('created_at',  $month)->whereYear('created_at', $year)->get();
+                $total = 0;
+                foreach ($orders as $key => $value) {
+                    $total += $value->products->sum('pivot.quantity');
+                }
+                $data[$i] = $total;
             }
             $chart_sale = [
                 'labels' => $labels,

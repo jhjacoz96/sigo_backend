@@ -48,7 +48,10 @@ class SaleClientService {
                 $nowMouth = strval(array_search($month, $this->months->toArray()) + 1);
                 $orders = $client->orders()->where('status', 'enviado')->whereMonth('created_at',  $nowMouth)->whereYear('created_at', $nowYear);
                 $sale_amount = $orders->sum('total');
-                $sale_quantity = $orders->count();
+                $sale_quantity = 0;
+                foreach ($orders->get() as $key => $value) {
+                    $sale_quantity += $value->products->sum('pivot.quantity');
+                }
                 $sale_commission = $sale_quantity * 500.00;
                 return [
                     'month' => $month,
@@ -74,7 +77,11 @@ class SaleClientService {
             $nowYear = Carbon::now()->format('Y');
             $year = isset($data['year']) ? $data['year'] : $nowYear;
             $nowMouth = array_search($data['month'], $this->months->toArray()) + 1;
-            $quantity_sale = $client->orders()->where('status', 'enviado')->whereMonth('created_at', $nowMouth)->whereYear('created_at', $year)->count();
+            $orders = $client->orders()->where('status', 'enviado')->whereMonth('created_at', $nowMouth)->whereYear('created_at', $year)->get();
+            $quantity_sale = 0;
+            foreach ($orders as $key => $value) {
+                $quantity_sale += $value->products->sum('pivot.quantity');
+            }
             $model = SaleClient::create([
                 'month' => $data['month'],
                 'quantity' => $quantity_sale,
