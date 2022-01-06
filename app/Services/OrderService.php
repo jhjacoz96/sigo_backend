@@ -39,6 +39,7 @@ class OrderService {
                 'name_delivery' => $data['name_delivery'],
                 'phone_delivery' => $data['phone_delivery'],
                 'cost_delivery' => $data['cost_delivery'],
+                'commune' => $data['commune'],
                 'address_delivery' => $data['address_delivery'],
                 'comment_delivery' => $data['comment_delivery'] ?? null,
             ]);
@@ -74,6 +75,7 @@ class OrderService {
                 'status' => $data['status'],
                 'name_delivery' => $data['name_delivery'],
                 'phone_delivery' => $data['phone_delivery'],
+                'commune' => $data['commune'],
                 'cost_delivery' => $data['cost_delivery'],
                 'address_delivery' => $data['address_delivery'],
                 'comment_delivery' => $data['comment_delivery'] ?? null,

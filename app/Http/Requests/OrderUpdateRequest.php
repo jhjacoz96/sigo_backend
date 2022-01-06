@@ -44,6 +44,7 @@ class OrderUpdateRequest extends FormRequest
             'name_delivery' => 'required|string',
             'phone_delivery' => 'required|string',
             'cost_delivery' => 'required|numeric|min:0|not_in:0',
+            'commune' => 'required|string',
             'address_delivery' => 'required|string',
             'comment_delivery' => 'sometimes|nullable|string',
             'products' => 'sometimes|nullable|array',

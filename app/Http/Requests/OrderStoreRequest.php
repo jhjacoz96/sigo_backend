@@ -35,6 +35,7 @@ class OrderStoreRequest extends FormRequest
             'client_id' => 'required|integer|exists:clients,id',
             'total' => 'required|numeric|min:0|not_in:0',
             'name_delivery' => 'required|string',
+            'commune' => 'required|string',
             'phone_delivery' => 'required|string',
             'address_delivery' => 'required|string',
             'cost_delivery' => 'required|numeric|min:0|not_in:0',

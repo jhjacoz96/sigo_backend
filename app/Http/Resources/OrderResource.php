@@ -26,6 +26,7 @@ class OrderResource extends JsonResource
             'phone_delivery' => $this->phone_delivery,
             'cost_delivery' => $this->cost_delivery,
             'address_delivery' => $this->address_delivery,
+            'commune' => $this->commune,
             'comment_delivery' => $this->comment_delivery ?? null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
