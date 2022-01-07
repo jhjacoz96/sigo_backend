@@ -20,8 +20,9 @@ class ProductService {
 
     public function index ($params) {
         try {
-            $q = Product::where('stock', '>', 0)->orderBy('id', 'desc');
+            $q = Product::orderBy('id', 'desc');
             !isset($params['status']) ? $model = $q->where('status', 'A') : '';
+            !isset($params['status']) ? $model = $q->where('stock', '>', 0) : '';
             !empty($params['search']) ? $model = $q->where(function($query) use($params) {
                 $query->where('name', 'like','%'.$params['search'] .'%')
                  ->orWhere('slug', 'like','%'.$params['search'] .'%')
