@@ -13,8 +13,7 @@ class SaleClientResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
-    {
+    public function toArray($request) {
         $year = intval(Carbon::now()->format('Y'));
         $last_year = $year;
         $month = intval(Carbon::now()->format('m'));
@@ -28,10 +27,18 @@ class SaleClientResource extends JsonResource
         $month = strval($month);
         $last_year = strval($last_year);
         $last_month = strval($last_month);
-        $current_total_sale = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $month)->whereYear('created_at', $year)->sum('total');
-        $last_total_sale = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $last_month)->whereYear('created_at', $last_year)->sum('total');
-        $current_quantity_sale = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $month)->whereYear('created_at', $year)->count();
-        $last_quantity_sale = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $last_month)->whereYear('created_at', $last_year)->count();
+        $current_quantity_sale = 0;
+        $current_sale = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $month)->whereYear('created_at', $year);
+        foreach ($current_sale->get() as $key => $value) {
+            $current_quantity_sale += $value->products->sum('pivot.quantity');
+        }
+        $current_total_sale = $current_sale->sum('total');
+        $last_quantity_sale = 0;
+        $last_sale = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $last_month)->whereYear('created_at', $last_year);
+        foreach ($last_sale->get() as $key => $value) {
+            $last_quantity_sale += $value->products->sum('pivot.quantity');
+        }
+        $last_total_sale = $last_sale->sum('total');
 
         return [
             "id"=> $this->id,

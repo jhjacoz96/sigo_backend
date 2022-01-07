@@ -29,7 +29,15 @@ class ClientResource extends JsonResource
         $last_year = strval($last_year);
         $last_month = strval($last_month);
         $current_orders = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $month)->whereYear('created_at', $year);
+        $current_sale_quantity = 0;
+        foreach ($current_orders->get() as $key => $value) {
+            $current_sale_quantity += $value->products->sum('pivot.quantity');
+        }
         $last_orders = $this->orders()->where('status', 'enviado')->whereMonth('created_at', $last_month)->whereYear('created_at', $last_year);
+        $last_sale_quantity = 0;
+        foreach ($last_orders->get() as $key => $value) {
+            $last_sale_quantity += $value->products->sum('pivot.quantity');
+        }
         return [
             "id"=> $this->id,
             "name"=> $this->name,
@@ -39,10 +47,10 @@ class ClientResource extends JsonResource
             "document"=> $this->document,
             "comment"=> $this->comment,
             "type_document_id"=> $this->type_document_id,
-            "current_commission" => $current_orders->count() * 500.00,
-            "last_commission" => $last_orders->count() * 500.00,
-            "current_quantity_sale" => $current_orders->count(),
-            "last_quantity_sale" => $last_orders->count(),
+            "current_commission" => $current_sale_quantity * 500.00,
+            "last_commission" => $last_sale_quantity * 500.00,
+            "current_quantity_sale" => $current_sale_quantity,
+            "last_quantity_sale" => $last_sale_quantity,
             "type_document"=> $this->type_document,
             "status"=> $this->status
         ];
