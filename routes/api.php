@@ -125,6 +125,7 @@ Route::group([
         });
         Route::prefix('sale-system')->group(function () {
             Route::get('dashboard', [SaleSystemController::class, 'dashboard']);
+            Route::get('commission', [SaleSystemController::class, 'showCommission']);
         });
     });
     Route::prefix('store')->group(function () {

@@ -69,6 +69,7 @@ class OrderService {
     public function update ($data, $order) {
         try {
             DB::beginTransaction();
+            dump('update');
             $order->update([
                 'type_payment' => $data['type_payment'],
                 'total' => $data['total'],
@@ -95,6 +96,7 @@ class OrderService {
     public function updateStatus ($data, $order) {
         try {
             DB::beginTransaction();
+            dump('status');
             $order->update([
                 'status' => $data['status']
             ]);

@@ -20,7 +20,17 @@ class SaleSystemController extends Controller
             $data = $this->service->dashboard($request);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.dashboard');
+        }
+    }
+
+    public function showCommission (Request $request)
+    {
+        try {
+            $data = $this->service->showCommission($request);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.showCommission');
         }
     }
 

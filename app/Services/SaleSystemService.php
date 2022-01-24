@@ -82,4 +82,21 @@ class SaleSystemService {
         }
     }
 
+    public function showCommission ($params) {
+        try {
+            $orders = Order::whereYear('created_at', $params['year'])->whereMonth('created_at', $params['month'])->where('status', $params['status'])->get();
+            $quantityProduct = 0;
+            foreach ($orders as $key => $order) {
+                $quantityProduct += $order->products->sum('pivot.quantity');
+            }
+            $data = [
+                'commission' => $quantityProduct * 200,
+                'quantity_products' => $quantityProduct,
+            ];
+            return $data;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
 }
