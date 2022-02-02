@@ -47,6 +47,10 @@ class OrderController extends Controller
     public function store (OrderStoreRequest $request) {
        try {
             $data = $request->validated();
+            $message = [
+                'message' => 'Accíón no permitida',
+            ];
+            return bodyResponseRequest( EnumResponse::NOT_FOUND, $message);
             $model = $this->service->store($data);
             $client = $this->serviceClient->find($model->client_id);
             $this->serviceCart->destroyAll($client);
